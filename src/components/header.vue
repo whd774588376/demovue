@@ -7,7 +7,7 @@
        <div class="left inline">
          <div class="title">
            <span class="brand"></span>
-           <span class="name">粥品香坊(大运村)</span>
+           <span class="name">粥品香坊 ( 大运村 )</span>
          </div>
          <div class="description">
            <span>蜂鸟专送 / 38分钟送达</span>
