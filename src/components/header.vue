@@ -7,24 +7,24 @@
        <div class="left inline">
          <div class="title">
            <span class="brand"></span>
-           <span class="name">粥品香坊 ( 大运村 )</span>
+           <span class="name">{{seller.name}}</span>
          </div>
          <div class="description">
-           <span>蜂鸟专送 / 38分钟送达</span>
+           <span>{{seller.description}}</span>
          </div>
-         <div class="support">
-           <span class="icon inline"></span>
-           <span class="text">在线支付满28减5 , 满50减10</span>
+         <div class="support" v-if="seller.supports">
+           <my-icon :score="seller.supports[0].type" :size="3"></my-icon>
+           <span class="text">{{seller.supports[0].description}}</span>
          </div>
        </div>
-       <div class="support-count" @click="showDetail">
-         <span>5个</span>
+       <div class="support-count" @click="showDetail" v-if="seller.supports">
+         <span>{{seller.supports.length}}个</span>
          <i class="el-icon-arrow-right"></i>
        </div>
      </div>
      <div class="bottom" @click="showDetail">
        <span class="bulletin inline"></span>
-       <span class="message">我水电费看见地方阿斯蒂芬斯蒂芬大师傅阿斯蒂芬即可速度快发货卡收到回复可是看到付款斯蒂芬可是对方卡萨丁房卡士大夫卡士达粉卡士达粉卡萨丁焚枯食淡防守打法斯蒂芬斯蒂芬阿斯蒂芬斯蒂芬</span>
+       <span class="message">{{seller.bulletin}}</span>
        <i class="bottom-right el-icon-arrow-right"></i>
      </div>
      <div class="background">
@@ -34,15 +34,23 @@
        <div v-show="detailShow" class="detail">
         <div class="detail-wrapper clearfix">
           <div class="detail-main">
-            <h1 class="title-name">粥品香坊(大运村)</h1>
+            <h1 class="title-name">{{seller.name}}</h1>
             <div class="star-wrapper">
-              <star :size="48" :score="3"></star>
+              <my-star :size="48" :score="seller.score"></my-star>
             </div>
-            <div class="title-mes">
-              <div class="line"></div>
-              <div class="text-mes">优惠信息</div>
-              <div class="line"></div>   
-            </div>   
+            <div class="caption">
+              <my-caption :caption="captionName"></my-caption>
+            </div> 
+            <ul class="detail-ul" v-if="seller.supports">
+              <li v-for="(item,index) in seller.supports" :key="index" class="detail-li">
+                <my-icon :score="item.type" :size="3"></my-icon>
+                <span class="text">{{item.description}}</span>
+              </li>
+            </ul> 
+            <div class="caption">
+              <my-caption :caption="'商家公告'"></my-caption>
+            </div> 
+            <div class="detail-bulletion">{{seller.bulletin}}</div>
           </div>
         </div>
         <div class="detail-close">
@@ -55,16 +63,25 @@
 
 <script>
 import Star from 'components/public/star'
+import Caption from 'components/public/caption'
+import icon from 'components/public/icon'
 export default {
   name: 'Header',
-  props: {},
+  props: {
+    seller: {
+      type: Object
+    }
+  },
   data () {
     return {
-      detailShow: false
+      detailShow: false,
+      captionName: "优惠信息"
     }
   },
   components: {
-    Star
+    "my-caption": Caption,
+    "my-star": Star,
+    "my-icon": icon   
   },
   computed: {},
   methods: {
@@ -80,60 +97,54 @@ export default {
 <style scoped lang="less">
 .head {
   position: relative;
-  height: 134px;
-  color: #fff;
+  height: 8.375rem;
+  color: rgb(255, 255, 255);
   background: rgba(7, 17, 27, 0.5);
   .inline {
     display: inline-block;
   }
   .content {
     position: relative;
-    height: 106px;
+    height: 6.625rem;
     font-size: 0;
     .logo {
       img {
-        width: 64px;
-        height: 64px;
-        border-radius: 2px;
-        margin: 24px 0 0 24px;
+        width: 4rem;
+        height: 4rem;
+        border-radius: .125rem;
+        margin: 1.5rem 0 0 1.5rem;
       }
     }
     .left {
-      font-size: 12px;
-      margin-left: 16px;
+      font-size: .75rem;
+      margin-left: 1rem;
       .title {
-        margin: 2px 0 5px 0;
-        line-height: 26px;
+        margin: .125rem 0 .3125rem 0;
+        line-height: 1.625rem;
         span {
           display: inline-block;
-          height: 26px;
+          height: 1.625rem;
         }
         .brand {
-          width: 32px;
-          height: 20px;
+          width: 2rem;
+          height: 1.25rem;
           vertical-align: top;
           background: url(../assets/brand@2x.png) no-repeat;
           background-size: 100% 100%;
-          border-radius: 2px;
-          margin:3px 6px 0 0;
+          border-radius: .125rem;
+          margin:.1875rem .375rem 0 0;
         }
         .name {
-          font-size: 18px;
+          font-size: 1.125rem;
           font-weight: 700;
         }
       }     
       .support {
-        margin-top: 5px;
-        .icon {
-          width: 14px;
-          height: 14px;
-          margin-right: 4px;
-          background: url(../assets/decrease_1@3x.png) no-repeat;
-          background-size: 100%;
-        }
+        margin-top: .3125rem;
         .text {
           vertical-align: top;
-          font-size: 10px;
+          font-size: .625rem;
+          line-height: .9375rem;
           color: rgb(255, 255, 255);
           font-weight: 200;
         }
@@ -141,13 +152,13 @@ export default {
     }
     .support-count {
       position: absolute;
-      right: 12px;
-      bottom: 12px;
-      padding: 0 8px;
-      height: 24px;
-      line-height: 24px;
-      border-radius: 14px;
-      font-size: 10px;
+      right: .75rem;
+      bottom: .75rem;
+      padding: 0 .5rem;
+      height: 1.5rem;
+      line-height: 1.5rem;
+      border-radius: .875rem;
+      font-size: .625rem;
       font-weight: 200;
       background: rgba(0, 0, 0, 0.5);
       text-align: center;
@@ -157,32 +168,32 @@ export default {
   .bottom {
     position: relative;
     cursor: pointer;
-    height: 28px;
-    line-height: 28px;
+    height: 1.75rem;
+    line-height: 1.75rem;
     background: rgba(7, 7, 7, 0.2);
-    padding: 0 22px 0 12px;
+    padding: 0 1.375rem 0 .75rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     .bulletin {
-      width: 24px;
-      height: 14px;
+      width: 1.5rem;
+      height: .875rem;
       vertical-align: top;
-      margin-top: 8px;
+      margin-top: .5rem;
       background: url(../assets/bulletin@2x.png) no-repeat;
       background-size: 100%;
-      border-radius: 2px;
+      border-radius: .125rem;
     }
     .message {
-      font-size: 10px;
+      font-size: .625rem;
       color: rgb(255, 255, 255);
       font-weight: 200;
-      line-height: 28px;
+      line-height: 1.75rem;
     }
     .bottom-right {
       position: absolute;
-      top: 8px;
-      right: 8px;
+      top: .5rem;
+      right: .5rem;
     }
   }
   .background {
@@ -192,7 +203,7 @@ export default {
     width: 100%;
     height: 100%;
     z-index: -1;
-    filter: blur(3px);
+    filter: blur(.1875rem);
     img {
       width: 100%;
       height: 100%;
@@ -222,44 +233,51 @@ export default {
       width: 100%;
       min-height: 100%;
       .detail-main {
-        margin-top: 64px;
-        padding-bottom: 64px;
+        margin-top: 4rem;
+        padding-bottom: 4rem;
         .title-name {
-          line-height: 16px;
+          line-height: 1rem;
           text-align: center;
-          font-size: 16px;
+          font-size: 1rem;
           font-weight: 700;
         }
         .star-wrapper {
-          margin-top: 18px;
-          padding: 2px 0;
+          margin-top: 1.125rem;
+          padding: .125rem 0;
           text-align: center;
         }
-        .title-mes {
-          display: flex;
+       .detail-ul {
           width: 80%;
-          margin: 30px auto 24px auto;
-          .line {
-            flex: 1;
-            position: relative;
-            top: -8px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+          margin: 0 auto 1rem auto;
+          .detail-li {
+            padding-left: .75rem;
+            height: 1.5rem;
+            line-height: 1.5rem;
+            margin-bottom: .375rem;
+            .text {
+              vertical-align: top;
+              font-size: .75rem;
+              line-height: .9375rem;
+              font-weight: 200;
+            }
           }
-          .text-mes {
-            padding: 0 12px;
-            font-size: 14px;
-            font-weight: 700;
-          }
+        }
+        .detail-bulletion {
+          display: table;
+          width: 80%;
+          margin: 0 auto;
+          font-size: .75rem;
+          line-height: 1.5rem;
         }
       }
     }
     .detail-close {
       position: relative;
-      width: 32px;
-      height: 32px;
-      margin: -64px auto 0 auto;
+      width: 2rem;
+      height: 2rem;
+      margin: -4rem auto 0 auto;
       clear: both;
-      font-size: 32px;
+      font-size: 2rem;
     }
   }
   .fade-enter-active,

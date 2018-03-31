@@ -6,8 +6,9 @@
 
 <script>
 const clsLength = 5
-const clsOn = 'el-icon-star-on'
-const clsOff = 'el-icon-star-off'
+const clsOn = 'on'
+const clsOff = 'off'
+const clsHalf = "half"
 export default {
   name: 'Star',
   props: {
@@ -32,9 +33,13 @@ export default {
     startList () {
       let result = []
       let score = Math.floor(this.score * 2) / 2
+      let hasDecimal = score % 1 !== 0
       let integer = Math.floor(score)
       for (let i = 0; i < integer; i++) {
         result.push(clsOn)
+      }
+      if (hasDecimal) {
+        result.push(clsHalf)
       }
       while (result.length < clsLength) {
         result.push(clsOff)
@@ -50,21 +55,65 @@ export default {
     font-size: 0;
     .star-item {
         display: inline-block;
-        background-repeat: no-repeat;
+        &:last-child {
+          margin-right: 0;
+        }
     }
     &.star-48 {
       .star-item {
-        width: 20px;
-        height: 20px;
-        font-size: 20px;
-        margin-right: 22px;
-        background-size: 20px 20px;
-        &:last-child {
-            margin-right: 0;
+        width: 1.25rem;
+        height: 1.25rem;
+        margin-right: 1.375rem;       
+        &.on {
+          background: url(../../assets/star48_on@2x.png) no-repeat;
+          background-size: 100% 100%;
+        }
+        &.off {
+          background: url(../../assets/star48_off@2x.png) no-repeat;
+          background-size: 100% 100%;
+        }
+        &.half {
+          background: url(../../assets/star48_half@2x.png) no-repeat;
+          background-size: 100% 100%;
         }
       }
-      .el-icon-star-on {
-          color: rgb(247, 202, 6);
+    }
+    &.star-36 {
+      .star-item {
+        width: .9375rem;
+        height: .9375rem;
+        margin-right: 1rem;
+        &.on {
+          background: url(../../assets/star36_on@2x.png) no-repeat;
+          background-size: 100% 100%;
+        }
+        &.off {
+          background: url(../../assets/star36_off@2x.png) no-repeat;
+          background-size: 100% 100%;
+        }
+        &.half {
+          background: url(../../assets/star36_half@2x.png) no-repeat ;
+          background-size: 100% 100%;
+        }
+      }
+    }
+    &.star-24 {
+      .star-item {
+        width: .625rem;
+        height: .625rem;
+        margin-right: .1875rem;
+        &.on {
+          background: url(../../assets/star24_on@2x.png) no-repeat;
+          background-size: 100% 100%;
+        }
+        &.off {
+          background: url(../../assets/star24_off@2x.png) no-repeat;
+          background-size: 100% 100%;
+        }
+        &.half {
+          background: url(../../assets/star24_half@2x.png) no-repeat;
+          background-size: 100% 100%;
+        }
       }
     }
 }
