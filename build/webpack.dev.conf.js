@@ -10,6 +10,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 
+const data = require('../data.json')
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
 
@@ -40,6 +41,16 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     publicPath: config.dev.assetsPublicPath,
     proxy: config.dev.proxyTable,
     quiet: true, // necessary for FriendlyErrorsPlugin
+    setup: function (app) {
+      app.get("/seller",function(req,res) {
+        let seller = data.seller
+        res.json(seller)
+      })
+      app.get("/good",function(req,res){
+        let goods = data.goods
+        res.json({message:goods});
+      })
+    },
     watchOptions: {
       poll: config.dev.poll,
     }

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <v-header></v-header>
+    <v-header :seller="seller"></v-header>
     <div class="tab">
       <ul>
         <li>
@@ -22,8 +22,27 @@
 import Header from 'components/header'
 export default {
   name: 'App',
+  data () {
+    return {
+      seller: {}
+    }
+  },
+  created () {
+    this.getSeller()
+  },
   components: {
     'v-header': Header
+  },
+  methods: {
+    getSeller () {
+      this.$http.get("/seller").then((res) => {
+        if (res.ok) {
+          this.seller = res.body
+        } else {
+          alert("请求失败")
+        }
+      })
+    }
   }
 }
 </script>
@@ -32,11 +51,11 @@ export default {
 .tab {
   ul {
     display: flex;
-    border-bottom: 1px solid #aaa;
+    border-bottom: .0625rem solid #aaa;
     li {
       flex: 1;
-      height: 40px;
-      line-height: 40px;
+      height: 2.5rem;
+      line-height: 2.5rem;
       text-align: center;
       a {
         display: inline-block;
@@ -44,7 +63,7 @@ export default {
       }
       .router-link-exact-active {
         color: red;
-        border-bottom: 2px solid red;
+        border-bottom: .125rem solid red;
       }
     }
   }
@@ -58,6 +77,6 @@ export default {
   background-color: #d3dce6;
   color: #333;
   text-align: center;
-  line-height: 60px;
+  line-height: 3.75rem;
 }
 </style>
