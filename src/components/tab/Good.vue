@@ -172,7 +172,7 @@ export default {
       &.active {
         background: #ffffff;
         font-weight: 700;
-        margin-top: -1px;
+        margin-top: -.0625rem;
         z-index: 100;
         border: none;
       }

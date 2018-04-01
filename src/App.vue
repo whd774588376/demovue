@@ -14,12 +14,14 @@
         </li>
       </ul>
     </div>
+    <shop-cart :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shop-cart>
     <router-view/>
   </div>
 </template>
 
 <script>
 import Header from 'components/header'
+import shopcart from 'components/shopcart'
 export default {
   name: 'App',
   data () {
@@ -31,7 +33,8 @@ export default {
     this.getSeller()
   },
   components: {
-    'v-header': Header
+    'v-header': Header,
+    "shop-cart": shopcart 
   },
   methods: {
     getSeller () {
