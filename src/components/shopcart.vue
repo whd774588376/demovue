@@ -7,10 +7,12 @@
                   <div class="logo">
                     <span class="icon-shopping"></span>
                   </div>
+                  <div class="count" v-show="totalCount > 0">{{totalCount}}</div>
               </div>
+              
             </div>            
             <div class="price">
-              <div class="text">¥100</div>
+              <div class="text">¥{{totalPrice}}</div>
             </div>
             <div class="desc">另需配送费 ¥ {{deliveryPrice}}元</div>
           </div>
@@ -25,11 +27,13 @@
 export default {
   name: "shopcart",
   props: {
-    deliveryPrice:{
-      type: Number
+    deliveryPrice: {
+      type: Number,
+      default: 0
     },
     minPrice: {
-      type: Number
+      type: Number,
+      default: 0
     }
   },
   data () {
@@ -37,7 +41,22 @@ export default {
   },
   created () {},
   components: {},
-  computed: {},
+  computed: {
+    totalPrice () {
+      let price = 0;
+      this.$store.state.foods.map((food) => {
+        price += food.price * food.count
+      })
+      return price
+    },
+    totalCount () {
+      let count = 0;
+      this.$store.state.foods.map((food) => {
+        count += food.count
+      })
+      return count
+    }
+  },
   methods: {}
 };
 </script>
@@ -46,6 +65,8 @@ export default {
 @shopColor: rgba(236, 231, 231, 0.342); //购物车背景颜色
 @fontColor: rgba(241, 236, 236, 0.6); // 字体颜色
 @rightColor: rgba(105, 102, 102, 0.342); // 右侧背景颜色
+@coutColor: rgb(240, 20, 20); // 总件数背景颜色
+@coutFontColor: rgb(255, 255, 255); // 总件数字体颜色
 .shop {
   position: fixed;
   bottom: 0;
@@ -64,6 +85,7 @@ export default {
       .left-wrapper {
         flex: 0 0 5rem;
         width: 5rem;
+        position: relative;
         .logo-wrapper {
           width: 3.625rem;
           height: 3.625rem;
@@ -89,7 +111,23 @@ export default {
               background-size: 100% 100%;
             }
           }
+          .count {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 1.5rem;
+            height: 1.125rem;
+            line-height: 1.125rem;
+            font-size: .625rem;
+            font-weight: 700;
+            background-color: @coutColor;
+            color: @coutFontColor;
+            border-radius: 15px;
+            box-shadow: 0 .25rem .5rem 0 rgba(0, 0, 0, 0.4);
+            text-align: center;
+          }
         }
+        
       }
       .price {
         flex: 0 0 2.875rem;

@@ -30,6 +30,9 @@
                     <span class="new-price">¥{{food.price}}</span><span v-if="food.oldPrice" class="old-price">¥{{food.oldPrice}}</span>
                   </div>
                 </div>
+                <div class="shopcart">
+                  <shop-cart :shop="food"></shop-cart>
+                </div>
               </li>
             </ul>
           </div>
@@ -40,12 +43,15 @@
 </template>
 
 <script>
-import icon from "components/public/icon"
 import BScroll from "better-scroll"
+
+import icon from "components/public/icon"
+import shop from "components/public/shop"
 export default {
   name: 'good',
   components: {
-    "my-icon": icon
+    "my-icon": icon,
+    "shop-cart": shop
   },
   data () {
     return {
@@ -106,6 +112,7 @@ export default {
         probeType: 3
       })
       this.foodScroll = new BScroll(this.$refs.food, {
+        click: true,
         probeType: 3
       })
       this.foodScroll.on("scroll", (pos) => {
@@ -161,7 +168,7 @@ export default {
   .menu-wrapper {
     flex: 0 0 5rem;
     width: 5rem;
-    background: #f3f5f7;
+    background: red;
     .menu-item {
       display: table;
       height: 3.375rem;
@@ -203,6 +210,7 @@ export default {
         .food-content {
           padding: 0 1.125rem;
           .food-content-li {
+            position: relative;
             display: flex;
             padding: 1.125rem 0;
             border-bottom:.0625rem solid @listBorder;
@@ -232,6 +240,12 @@ export default {
                 color: @titleColor;
                 margin-top: .5rem;
               }
+              .description {
+                width: 10rem;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              }
               .food-content-count {
                 .sell-count {
                   margin-right: .75rem;
@@ -252,6 +266,11 @@ export default {
                   text-decoration: line-through;
                 }
               }
+            }
+            .shopcart {
+              position: absolute;
+              bottom: 1.125rem;
+              right: 0;
             }
           }
         }

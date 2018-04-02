@@ -9,6 +9,7 @@ import 'css/style.css'
 import '@/directive/directive.js'
 import App from './App'
 import router from './router'
+import store from './state'
 Vue.use(ElementUI)
 Vue.use(VueResource)
 Vue.use(FunctionJs)
@@ -17,6 +18,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
