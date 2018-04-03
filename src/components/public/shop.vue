@@ -1,5 +1,5 @@
 <template>
-  <div class="shop">
+  <div class="shop-cart">
       <span class="el-icon-remove-outline icon" v-show="count > 0" @click="removeFood($event)"></span>
       <span v-show="count > 0" class="text">{{count}}</span>
       <span class="el-icon-circle-plus icon" @click="plusFood($event)"></span>
@@ -21,11 +21,11 @@ export default {
     }
   },
   created () {
-    this.shoping = Object.assign({}, {count: this.$store.getters.getcount(this.shoping.name)}, this.shoping)
+    this.shoping = Object.assign({}, {count: this.$store.getters.getcount(this.shoping.id)}, this.shoping)
   },
   computed: {
     count () {
-      return this.$store.getters.getcount(this.shoping.name)
+      return this.$store.getters.getcount(this.shoping.id)
     }
   },
   methods: {
@@ -38,7 +38,7 @@ export default {
       this.minus(this.shoping)
     },
     getcount () {
-      this.count = this.$store.getters.getcount(this.shoping.name)
+      this.count = this.$store.getters.getcount(this.shoping.id)
     },
     ...mapMutations(["add", "minus"])
   }
@@ -47,7 +47,8 @@ export default {
 <style scoped lang="less">
 @iconColor: rgb(0,160,220);
 @fontColor: rgb(147,153,159);
-.shop {
+.shop-cart {
+  font-size: 0;
   span {
     display: inline-block;
   }
@@ -62,6 +63,7 @@ export default {
   .text {
     font-size: .625rem;
     color: @fontColor;
+    width: 1.5rem;
     height: 1.25rem;    
     line-height: 1.25rem;
     text-align: center;

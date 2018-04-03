@@ -153,6 +153,7 @@ export default {
 
 <style scoped lang="less">
 @sizeColor: rgb(7,17,27); // 左侧菜单字体颜色
+@backColor: #cfdbf3; // 右侧菜单背景色
 @titleColor: rgb(147,153,159); // 右侧分类title 颜色
 @titleBackGround:#f3f5f7; // 右侧分类标题 背景颜色
 @titleBorder:#d9dde1; // 右侧分类列表 标题颜色
@@ -168,7 +169,7 @@ export default {
   .menu-wrapper {
     flex: 0 0 5rem;
     width: 5rem;
-    background: red;
+    background: @backColor;
     .menu-item {
       display: table;
       height: 3.375rem;
