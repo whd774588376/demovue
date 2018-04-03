@@ -21,11 +21,15 @@ export default {
     }
   },
   created () {
-    this.shoping = Object.assign({}, {count: this.$store.getters.getcount(this.shoping.id)}, this.shoping)
   },
   computed: {
-    count () {
-      return this.$store.getters.getcount(this.shoping.id)
+    count: {
+      cache: false,
+      get () {
+        let num = this.$store.getters.getcount(this.shoping.id)
+        console.log(num)
+        return num
+      }   
     }
   },
   methods: {
@@ -36,9 +40,6 @@ export default {
     removeFood (event) {
       if (!event._constructed) return
       this.minus(this.shoping)
-    },
-    getcount () {
-      this.count = this.$store.getters.getcount(this.shoping.id)
     },
     ...mapMutations(["add", "minus"])
   }

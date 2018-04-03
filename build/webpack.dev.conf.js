@@ -46,14 +46,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         let seller = data.seller
         res.json(seller)
       })
-      app.get("/good",function(req,res){ 
-        console.log()       
-        data.goods.map((item) => {
-          item.id = Math.floor(Math.random()*10)
-          item.foods.map((food) => {
-            food.id = Math.floor(Math.random()*100)
-          })
-        })       
+      app.get("/good",function(req,res){       
         res.json({message: data.goods});
       })
     },

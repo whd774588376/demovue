@@ -66,7 +66,8 @@ export default {
   created () {
     this.$http.get("/good").then((Response) => {
       if (Response.ok) {    
-        this.goods = Response.body.message          
+        this.goods = Response.body.message  
+        console.log(this.goods)        
         this.$nextTick(() => {
           this.scroll()
           this.getHeight()

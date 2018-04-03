@@ -1,8 +1,6 @@
-import Vue from "vue"
+import Vue from 'vue'
 import Vuex from "vuex"
-
 Vue.use(Vuex)
-
 export default new Vuex.Store({
   state: {
     foods: []
@@ -23,8 +21,10 @@ export default new Vuex.Store({
       if (type) {
         state.foods.map((item) => {
           if (item.id === food.id) {
+            if (!item.count) {
+              item.count = 0
+            }
             item.count += 1
-            return true
           }
         })
       } else {
@@ -39,7 +39,6 @@ export default new Vuex.Store({
           if (item.count === 0) {
             state.foods.splice(index, 1)
           }   
-          return true   
         }
       })
     }

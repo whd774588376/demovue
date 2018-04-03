@@ -100,6 +100,7 @@ export default {
       }
     },
     foodList () {
+      console.log(this.$store.state.foods)
       return this.$store.state.foods
     }
   },
@@ -107,11 +108,7 @@ export default {
     detail () {
       if (this.totalCount > 0) {
         this.detCart = !this.detCart
-        this.scroll()
       }   
-    },
-    scroll () {
-      console.log(this.$store.state.foods)  
     },
     remove () {
       console.log(this.$children)
