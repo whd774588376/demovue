@@ -46,7 +46,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
         let seller = data.seller
         res.json(seller)
       })
-      app.get("/good",function(req,res){       
+      app.get("/good",function(req,res){               
         res.json({message: data.goods});
       })
     },

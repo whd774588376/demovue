@@ -19,14 +19,14 @@
             <span class="shopping" >{{payment}}</span>
           </div>
       </div>
-      <div class="details" v-show="detCart">
-        <transition name="detail">
+      <transition name="detail">
+        <div class="details" v-show="detCart" ref="details" @click="detail">     
           <div class="cart-detail">
             <div class="cart-head">
               <span class="cart">购物车</span>
               <span class="clear" @click="remove">清空</span>
             </div>
-            <div class="cart-content" ref="cart">
+            <div class="cart-content">
               <ul>
                 <li v-for="(food, index) in foodList" :key="index" class="cart-food">
                   <div class="cart-food-left">{{food.name}}</div>
@@ -39,9 +39,9 @@
                 </li>
               </ul>
             </div>
-          </div>
-        </transition>       
-      </div>
+          </div>       
+        </div>
+      </transition>  
   </div>
 </template>
 
@@ -67,9 +67,13 @@ export default {
   },
   created () {
     this.$nextTick(() => {
-      this.cart = new BScroll(this.$refs.cart, {
-        click: true
-      })
+
+      // this.details = new BScroll(this.$refs.details, {
+      //   probeType: 3
+      // })
+      // this.details.on("scroll", (pos) => {
+      //   console.log("details" + pos)
+      // })
     })
   },
   components: {
@@ -100,7 +104,9 @@ export default {
       }
     },
     foodList () {
-      console.log(this.$store.state.foods)
+      if (this.$store.state.foods.length === 0) {
+        this.detCart = false
+      }
       return this.$store.state.foods
     }
   },
@@ -243,15 +249,16 @@ export default {
     top: 0;
     bottom: 2.875rem;
     left: 0;
-    background: @detBackColor;
+    z-index: -1;
+    background: @detBackColor;   
     .cart-detail {
       position: absolute;
-      padding-bottom: 1.125rem; 
       bottom: 0;
+      padding-bottom: 1.125rem; 
       width: 100%;
       max-height: 80%;
       background: #ffffff;
-      overflow: hidden;
+      overflow: auto;
       .cart-head {
         height: 2.5rem;
         background: @detHead;
@@ -279,7 +286,7 @@ export default {
       .cart-content {
         padding: 0 1.125rem;
         max-height: 25rem;
-        overflow: hidden;
+        overflow: auto;
         .cart-food {
           height: 3rem;
           display: flex;
@@ -299,15 +306,40 @@ export default {
             font-weight: 700;
             font-size: .875rem;
             display: flex;
-            .cart-food-shop {
+            p {
               flex: 1;
-              text-align: right;
+            }
+            .cart-food-shop {
+              flex: 0 0 4rem;
               padding-top: .125rem;
             }
           }
         }
       }
     }
+    &.detail-enter,
+    &.detail-leave-to {
+      opacity: 0; 
+      .cart-detail {
+        bottom: -100%;
+        transform: translate3d(0, -100%, 0);
+      }
+    }
+    &.detail-enter-to,
+    &.detail-leave {
+      opacity: 1; 
+      .cart-detail {
+        bottom: 0;
+        transform: translate3d(0, 0, 0);
+      }
+    }
+    &.detail-enter-active,
+    &.detail-leave-active {
+      transition: all 0.5s linear;
+      .cart-detail {
+        transition: all 0.5s linear;       
+      }
+    }  
   }  
 }
 </style>
