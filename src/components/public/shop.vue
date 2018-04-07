@@ -27,12 +27,12 @@ export default {
     }
   },
   methods: {
-    plusFood (event) {
-      if (!event._constructed) return    
-      this.add(this.shoping) 
+    plusFood (event) { 
+      let el = event.target
+      let rect = el.getBoundingClientRect()
+      this.add({food: this.shoping, rect})
     },
-    removeFood (event) {
-      if (!event._constructed) return
+    removeFood (event) {     
       this.minus(this.shoping)
     },
     ...mapMutations(["add", "minus"])
@@ -63,7 +63,7 @@ export default {
     }
   }  
   .move {
-    transition: all 0.2s linear;
+    transition: all 0.3s linear;
     transform: translate3D(0, 0, 0);
     .outline {
       transition: all 0.3s linear;
@@ -97,7 +97,7 @@ export default {
     opacity: 1;
   }
   .count-enter-active {
-    transition: all 0.8s linear;
+    transition: all 1s linear;
   }
   .count-leave-active {
     transition: all 0.1s linear;

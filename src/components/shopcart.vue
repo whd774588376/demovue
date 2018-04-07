@@ -20,7 +20,7 @@
           </div>
       </div>
       <transition name="detail">
-        <div class="details" v-show="detCart" ref="details" @click="detail">     
+        <div class="details" v-show="detCart" ref="details">     
           <div class="cart-detail">
             <div class="cart-head">
               <span class="cart">购物车</span>
@@ -41,12 +41,17 @@
             </div>
           </div>       
         </div>
-      </transition>  
+      </transition> 
+      <transition name="ball" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
+        <div class="ball" v-show="ballShow">
+          <div class="ball-inner inner-hook">1</div>
+        </div>
+      </transition>     
   </div>
 </template>
 
 <script>
-import BScroll from "better-scroll"
+// import BScroll from "better-scroll"
 import shop from "components/public/shop"
 export default {
   name: "shopcart",
@@ -66,15 +71,6 @@ export default {
     };
   },
   created () {
-    this.$nextTick(() => {
-
-      // this.details = new BScroll(this.$refs.details, {
-      //   probeType: 3
-      // })
-      // this.details.on("scroll", (pos) => {
-      //   console.log("details" + pos)
-      // })
-    })
   },
   components: {
     "my-shop": shop
@@ -104,10 +100,17 @@ export default {
       }
     },
     foodList () {
-      if (this.$store.state.foods.length === 0) {
+      return this.$store.state.foods
+    },
+    ballShow () {
+      return this.$store.state.ballShow
+    }
+  },
+  watch: {
+    foodList (val, oidval) {
+      if (val.length === 0) {
         this.detCart = false
       }
-      return this.$store.state.foods
     }
   },
   methods: {
@@ -118,6 +121,32 @@ export default {
     },
     remove () {
       console.log(this.$children)
+    },
+    beforeEnter (el) {
+      console.log(el)
+      let rect = this.$store.state.rect
+      let x = rect.x - 38
+      let y = -(window.innerHeight - rect.y - 24)
+      el.style.webkitTransform = `translate3d(0, ${y}px, 0)`
+      el.style.transform = `translate3d(0, ${y}px, 0)`
+      let inner = el.getElementsByClassName("inner-hook")[0]
+      inner.style.webkitTransform = `translate3d(${x}px, 0, 0)`
+      inner.style.transform = `translate3d(${x}px, 0, 0)`
+    },
+    enter (el) {
+      /* eslint-disable no-unused-vars */
+      let rf = el.offsetHeight
+      this.$nextTick(() => {
+        el.style.webkitTransform = 'translate3d(0, 0, 0)'
+        el.style.transform = 'translate3d(0, 0, 0)'
+        let inner = el.getElementsByClassName("inner-hook")[0]
+        inner.style.webkitTransform = 'translate3d(0, 0, 0)'
+        inner.style.transform = 'translate3d(0, 0, 0)'
+      })
+    },
+    afterEnter (el) {
+      this.$store.commit('ballHide')
+      el.style.display = 'none'
     }
   }
 };
@@ -142,7 +171,7 @@ export default {
   left: 0;
   width: 100%;
   height: 2.875rem;
-  z-index: 1000;
+  z-index: 100;
   .content {
     display: flex;
     height: 100%;
@@ -319,7 +348,6 @@ export default {
     }
     &.detail-enter,
     &.detail-leave-to {
-      opacity: 0; 
       .cart-detail {
         bottom: -100%;
         transform: translate3d(0, -100%, 0);
@@ -327,7 +355,6 @@ export default {
     }
     &.detail-enter-to,
     &.detail-leave {
-      opacity: 1; 
       .cart-detail {
         bottom: 0;
         transform: translate3d(0, 0, 0);
@@ -335,11 +362,29 @@ export default {
     }
     &.detail-enter-active,
     &.detail-leave-active {
-      transition: all 0.5s linear;
       .cart-detail {
         transition: all 0.5s linear;       
       }
     }  
-  }  
+  } 
+  .ball {
+    position: fixed;
+    left: 2.375rem;
+    bottom: 1.5rem;
+    z-index: 300;
+    transition: all 0.4s cubic-bezier(0.49, -0.29, 0.75, 0.41);
+    .ball-inner {
+      width: 1rem;
+      height: 1rem;
+      border-radius: 50%;
+      font-size: .625rem;
+      text-align: center;
+      line-height: 1rem;
+      color: #fff;
+      background: @detFontRight;
+      transition: all 0.4s linear;
+    }
+  }
+
 }
 </style>

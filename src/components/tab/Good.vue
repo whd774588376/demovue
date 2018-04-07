@@ -167,6 +167,7 @@ export default {
   top: 10.9375rem;
   bottom: 2.875rem;
   width: 100%;
+  z-index: 50;
   .menu-wrapper {
     flex: 0 0 5rem;
     width: 5rem;

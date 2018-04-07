@@ -5,7 +5,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    foods: []
+    foods: [],
+    ballShow: false,
+    rect: {
+      x: 0,
+      y: 0
+    }
   },
   getters: {
     getcount: (state) => (id) => {
@@ -19,22 +24,22 @@ export default new Vuex.Store({
   },
   mutations: {
     add (state, food) {
-      let type = state.foods.find((item) => item.id === food.id)
+      state.ballShow = true
+      state.rect.x = food.rect.left 
+      state.rect.y = food.rect.top
+      let type = state.foods.find((item) => item.id === food.food.id)
       if (type) {
         state.foods.map((item) => {
-          if (item.id === food.id) {
+          if (item.id === food.food.id) {
             item.count += 1
           }
         })
       } else {
-        food.count = 1
-        state.foods.push(food)
+        food.food.count = 1
+        state.foods.push(food.food)
       }
     },
     minus (state, food) {
-      for (let i = 0; i < state.foods.length; i++) {
-
-      }
       state.foods.map((item, index) => {
         if (item.id === food.id) {
           item.count -= 1
@@ -44,6 +49,9 @@ export default new Vuex.Store({
           return true   
         }
       })
+    },
+    ballHide (state) {
+      state.ballShow = false
     }
   }
 })
