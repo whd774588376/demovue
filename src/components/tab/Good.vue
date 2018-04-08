@@ -66,8 +66,7 @@ export default {
   created () {
     this.$http.get("/good").then((Response) => {
       if (Response.ok) {    
-        this.goods = Response.body.message  
-        console.log(this.goods)        
+        this.goods = Response.body.message       
         this.$nextTick(() => {
           this.scroll()
           this.getHeight()
@@ -167,7 +166,6 @@ export default {
   top: 10.9375rem;
   bottom: 2.875rem;
   width: 100%;
-  z-index: 50;
   .menu-wrapper {
     flex: 0 0 5rem;
     width: 5rem;

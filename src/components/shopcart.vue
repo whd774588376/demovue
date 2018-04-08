@@ -19,9 +19,10 @@
             <span class="shopping" >{{payment}}</span>
           </div>
       </div>
-      <transition name="detail">
-        <div class="details" v-show="detCart" ref="details">     
-          <div class="cart-detail">
+      <transition name="detail" @before-enter="detailBefore" @enter="detailEnter" @leave="detailLeave" @after-leave="detailAfterLeave">
+        <div class="details" v-show="detCart" ref="details"> 
+          <div class="cart-top cart-top-hook"></div>    
+          <div class="cart-detail cart-detail-hook">
             <div class="cart-head">
               <span class="cart">购物车</span>
               <span class="clear" @click="remove">清空</span>
@@ -52,6 +53,7 @@
 
 <script>
 // import BScroll from "better-scroll"
+import Velocity from 'velocity-animate'
 import shop from "components/public/shop"
 export default {
   name: "shopcart",
@@ -104,6 +106,10 @@ export default {
     },
     ballShow () {
       return this.$store.state.ballShow
+    },
+    height () {
+      let h = 58 + this.foodList.length * 48
+      return h
     }
   },
   watch: {
@@ -123,7 +129,6 @@ export default {
       console.log(this.$children)
     },
     beforeEnter (el) {
-      console.log(el)
       let rect = this.$store.state.rect
       let x = rect.x - 38
       let y = -(window.innerHeight - rect.y - 24)
@@ -147,6 +152,29 @@ export default {
     afterEnter (el) {
       this.$store.commit('ballHide')
       el.style.display = 'none'
+    },
+    detailBefore (el) {
+      let content = el.getElementsByClassName("cart-detail-hook")[0]
+      let top = el.getElementsByClassName("cart-top-hook")[0]
+      top.style.opacity = 0
+      content.style.bottom = -this.height + "px"
+    },
+    detailEnter (el, done) {
+      let content = el.getElementsByClassName("cart-detail-hook")[0]
+      let top = el.getElementsByClassName("cart-top-hook")[0]
+      Velocity(content, {translateY: -this.height + "px"}, { duration: 300 })
+      Velocity(top, {opacity: 1}, { duration: 300 })
+      done()
+    },
+    detailLeave (el, done) {
+      let content = el.getElementsByClassName("cart-detail-hook")[0]
+      let top = el.getElementsByClassName("cart-top-hook")[0] 
+      Velocity(content, {translateY: "0px"}, { duration: 300})
+      Velocity(top, {opacity: 0}, { duration: 300})
+      Velocity(el, {opacity: 0}, { complete: done})
+    },
+    detailAfterLeave (el) {
+      el.style = "display: none"
     }
   }
 };
@@ -278,8 +306,14 @@ export default {
     top: 0;
     bottom: 2.875rem;
     left: 0;
-    z-index: -1;
-    background: @detBackColor;   
+    z-index: -1;  
+    transition: all 0.5s linear; 
+    .cart-top {
+      width: 100%;
+      height: 100%;
+      background: @detBackColor; 
+      z-index: -1; 
+    }
     .cart-detail {
       position: absolute;
       bottom: 0;
@@ -288,6 +322,7 @@ export default {
       max-height: 80%;
       background: #ffffff;
       overflow: auto;
+      z-index: 50;  
       .cart-head {
         height: 2.5rem;
         background: @detHead;
@@ -345,27 +380,8 @@ export default {
           }
         }
       }
-    }
-    &.detail-enter,
-    &.detail-leave-to {
-      .cart-detail {
-        bottom: -100%;
-        transform: translate3d(0, -100%, 0);
-      }
-    }
-    &.detail-enter-to,
-    &.detail-leave {
-      .cart-detail {
-        bottom: 0;
-        transform: translate3d(0, 0, 0);
-      }
-    }
-    &.detail-enter-active,
-    &.detail-leave-active {
-      .cart-detail {
-        transition: all 0.5s linear;       
-      }
     }  
+
   } 
   .ball {
     position: fixed;
